@@ -20,7 +20,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let aluno of alunos">
+                        <tr *ngFor="let aluno of alunos" [class.greenClass]="aluno.med>=7" [class.redClass]="aluno.med>0 && aluno.med<7">
                             <td>{{aluno.id}}</td>
                             <td>{{aluno.nome}}</td>
                             <td align=center>{{aluno.freq}}</td>
@@ -33,7 +33,8 @@
                                 <div *ngIf="aluno.freq">
                                     <div *ngIf="aluno.freq<150; else notas">Reprovado por Falta</div>
                                         <ng-template #notas>
-                                            <div *ngIf="aluno.med<7">Reprovado</div>
+                                            <div *ngIf="aluno.med<7" >Reprovado</div>
+                                            
                                             <div *ngIf="aluno.med>=7">Aprovado</div>
                                                 
                                         </ng-template>

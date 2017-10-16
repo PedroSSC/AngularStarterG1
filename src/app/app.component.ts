@@ -55,9 +55,10 @@ export class AppComponent implements OnInit {
         console.log(cont);
 
         if(cont>0){
-            nota = (+this.novo.n1+ +this.novo.n2+ +this.novo.n3+ +this.novo.n4)/cont;
+            nota = ((+this.novo.n1+ +this.novo.n2+ +this.novo.n3+ +this.novo.n4)/cont).toFixed(2);
             this.novo.med=nota;
             console.log(nota);
+            this.novo = new Aluno(0, 1,'', null,null,null,null,null,null);
         }
     }
 }
