@@ -1,0 +1,95 @@
+<div class="container">
+    <h1>Escola Municipal Cruzeiro do Sul</h1>
+    <h2>Turma 105</h2>
+    <div class="row">
+        <div class="col">
+
+                <h2>Lista de Alunos</h2>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Nome</th>
+                            <th>Frequencia</th>
+                            <th>N1</th>
+                            <th>N2</th>
+                            <th>N3</th>
+                            <th>N4</th>
+                            <th>Média</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let aluno of alunos">
+                            <td>{{aluno.id}}</td>
+                            <td>{{aluno.nome}}</td>
+                            <td align=center>{{aluno.freq}}</td>
+                            <td align=center>{{aluno.n1}}</td>
+                            <td align=center>{{aluno.n2}}</td>
+                            <td align=center>{{aluno.n3}}</td>
+                            <td align=center>{{aluno.n4}}</td>
+                            <td align=center>{{aluno.med}}</td>
+                            <td>
+                                <div *ngIf="aluno.freq">
+                                    <div *ngIf="aluno.freq<150; else notas">Reprovado por Falta</div>
+                                        <ng-template #notas>
+                                            <div *ngIf="aluno.med<7">Reprovado</div>
+                                            <div *ngIf="aluno.med>=7">Aprovado</div>
+                                                
+                                        </ng-template>
+
+
+                                </div>
+                            </td>
+
+                            <td>
+                                <button class="btn btn-sm btn-primary" (click)="editar(aluno)">Registrar</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+              
+              
+
+        </div>
+        <div class="col">
+            <h2>Registrar Alunos</h2>
+            <form #formCadastro="ngForm" (ngSubmit)="salvar()">
+                <div class="col">
+                
+                    <div class="form-group-sm">
+                        <label for="nome">Nome: </label>
+                        <input type="text" class="form-control" id="nome" name="nome" [(ngModel)]="novo.nome" required>
+                    </div>
+                    <br>
+                    <div class="form-group-sm">
+                            <label for="nome">Frequência: </label>
+                            <input type="text" class="form-control" id="freq" name="freq" [(ngModel)]="novo.freq">
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <br>
+                        <label for="nome">Notas: </label>
+                        <div class="row">
+                            <div class="col">
+                                    N1 <input type="text" class="form-control" id="n1" name="n1" width="10" [(ngModel)]="novo.n1">
+                            </div>
+                            <div class="col">
+                                    N2 <input type="text" class="form-control" id="n2" name="n2" [(ngModel)]="novo.n2">
+                            </div>
+                            <div class="col">
+                                    N3 <input type="text" class="form-control" id="n3" name="n3" [(ngModel)]="novo.n3">
+                            </div>
+                            <div class="col">
+                                    N4 <input type="text" class="form-control" id="n4" name="n4" [(ngModel)]="novo.n4">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary" [disabled]="!formCadastro.valid">Salvar</button>
+            </form>
+        </div>
+        <br>
+
+    </div>
