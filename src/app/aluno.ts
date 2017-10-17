@@ -22,6 +22,15 @@ export class Aluno {
         this.med = med;
     }
 
+    atualiza(aluno:Aluno){
+        this.freq = aluno.freq;
+        this.n1 = aluno.n1;
+        this.n2 = aluno.n2;
+        this.n3 = aluno.n3;
+        this.n4 = aluno.n4;
+        this.med = aluno.med;
+    }
+
     media(){
         let list:number[] = [this.n1,this.n2,this.n3,this.n4];
         let cont = 0;

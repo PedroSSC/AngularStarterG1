@@ -1,6 +1,7 @@
 <div class="container">
     <h1>Escola Municipal Cruzeiro do Sul</h1>
     <h2>Turma 105</h2>
+    <h3>Média da Turma: {{mediaTurma()}}</h3>
     <div class="row">
         <div class="col">
 
@@ -47,7 +48,7 @@
         </div>
         <div class="col">
             <h2>Registrar Alunos</h2>
-            <form #formCadastro="ngForm" (ngSubmit)="salvar()">
+            <form #formCadastro="ngForm" >
                 <div class="col">
                 
                     <div class="form-group-sm">
@@ -80,8 +81,10 @@
                         </div>
                     </div>
                 </div>
-                <button type="submit" class="btn btn-primary" [disabled]="!formCadastro.valid">Salvar</button>
+                <button type="submit" class="btn btn-primary" (click)="salvar()" [disabled]="!formCadastro.valid">Salvar</button>
+                <button type="submit" class="btn btn-warning" (click)="limpar()" >Limpar</button>
             </form>
+
         </div>
         <br>
 

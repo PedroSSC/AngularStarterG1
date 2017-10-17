@@ -9,6 +9,7 @@ import { Aluno } from './aluno';
 })
 export class AppComponent implements OnInit {
     alunos: Array<Aluno>;
+    select: Aluno = new Aluno(0, 1,'', null,null,null,null,null,null);
     novo: Aluno = new Aluno(0, 1,'', null,null,null,null,null,null);
     ultimo_id = 5;
     editando = false;
@@ -26,26 +27,37 @@ export class AppComponent implements OnInit {
     ngOnInit(): void {
     }
 
-
-    encontrar(id: number): number {
-        let indice = -1;
-        for (let i = 0; i < this.alunos.length; i++) {
-            if (this.alunos[i].id == id) {
-                indice = i;
-                break;
-            }
-        }
-        return indice;
-    }
-
     editar(aluno: Aluno): void {
-       this.novo = aluno;
+       this.select = aluno;
+       this.novo = new Aluno(aluno.id, aluno.turma, aluno.nome, aluno.freq, aluno.n1, aluno.n2, aluno.n3, aluno.n4, aluno.med);
 
     }
 
     salvar(): void{
         let n = this.novo.media();
-        console.log(this.novo.situacao());
+        this.select.atualiza(this.novo);
         this.novo = new Aluno(0, 1,'', null,null,null,null,null,null);
+        this.select = new Aluno(0, 1,'', null,null,null,null,null,null);
+    }
+
+    limpar():void{
+        this.novo = new Aluno(0, 1,'', null,null,null,null,null,null);
+        this.select = new Aluno(0, 1,'', null,null,null,null,null,null);
+    }
+
+    mediaTurma():number{
+        let media = 0;
+        let div = 0;
+
+        for (let i = 0; i < this.alunos.length; i++) {
+            if(this.alunos[i].med != null){
+                div ++;
+                media = media + +this.alunos[i].med;
+            }
+        }  
+        console.log('media: '+media+'   div: '+div);
+        media = media/div;
+        
+        return media;
     }
 }
