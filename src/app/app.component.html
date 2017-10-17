@@ -9,6 +9,7 @@
                     <thead>
                         <tr>
                             <th>#</th>
+                            <th>Turma</th>
                             <th>Nome</th>
                             <th>Frequência</th>
                             <th>N1</th>
@@ -16,12 +17,14 @@
                             <th>N3</th>
                             <th>N4</th>
                             <th>Média</th>
-                            <th>Status</th>
+                            <th>Situação</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let aluno of alunos" [class.nullClass]="aluno.med==null" [class.greenClass]="aluno.med>=7" [class.redClass]="aluno.med>=0 && aluno.med<7 || aluno.freq<150">
+                        <tr *ngFor="let aluno of alunos" [class.nullClass]="aluno.situacao()== 'N/I'" 
+                                                         [class.greenClass]="aluno.situacao()=='Aprovado'" [class.redClass]="aluno.situacao()=='Reprovado' || aluno.situacao()=='Reprovado por falta'">
                             <td>{{aluno.id}}</td>
+                            <td>{{aluno.turma}}</td>
                             <td>{{aluno.nome}}</td>
                             <td align=center>{{aluno.freq}}</td>
                             <td align=center>{{aluno.n1}}</td>
@@ -29,19 +32,8 @@
                             <td align=center>{{aluno.n3}}</td>
                             <td align=center>{{aluno.n4}}</td>
                             <td align=center>{{aluno.med}}</td>
-                            <td>
-                                <div *ngIf="aluno.freq">
-                                    <div *ngIf="aluno.freq<150; else notas">Reprovado por Falta</div>
-                                        <ng-template #notas>
-                                            <div *ngIf="aluno.med<7" >Reprovado</div>
-                                            
-                                            <div *ngIf="aluno.med>=7">Aprovado</div>
-                                                
-                                        </ng-template>
+                            <td align=center>{{aluno.situacao()}}</td>
 
-
-                                </div>
-                            </td>
 
                             <td>
                                 <button class="btn btn-sm btn-primary" (click)="editar(aluno)">Registrar</button>

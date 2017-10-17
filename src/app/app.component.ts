@@ -46,8 +46,6 @@ export class AppComponent implements OnInit {
     salvar(): void{
         let n = this.novo.media();
         console.log(this.novo.situacao());
-        if(n)
-            this.novo = new Aluno(0, 1,'', null,null,null,null,null,null);
-
+        this.novo = new Aluno(0, 1,'', null,null,null,null,null,null);
     }
 }

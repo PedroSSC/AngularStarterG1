@@ -35,28 +35,26 @@ export class Aluno {
         if(cont>0){
             nota = ((+this.n1+ +this.n2+ +this.n3+ +this.n4)/cont).toFixed(2);
             this.med=nota;
-            return true;
         }
-        return false;
     }
 
     situacao(){
         if(this.freq != null){
             if(this.freq<150)
-                return "Reprovado por falta.";
+                return "Reprovado por falta";
             else {
                 if(this.med != null){
                     if(this.med < 7){
-                        return "Reprovado."
+                        return "Reprovado"
                     }else{
-                        return "Aprovado."
+                        return "Aprovado"
                     }
                 }else{
-                    return "";
+                    return 'N/I';
                 }
             }
         }else{
-            return "";
+            return 'N/I';
         }
     }
 
