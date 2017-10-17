@@ -10,7 +10,7 @@
                         <tr>
                             <th>#</th>
                             <th>Nome</th>
-                            <th>Frequencia</th>
+                            <th>Frequência</th>
                             <th>N1</th>
                             <th>N2</th>
                             <th>N3</th>
@@ -20,7 +20,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let aluno of alunos" [class.greenClass]="aluno.med>=7" [class.redClass]="aluno.med>0 && aluno.med<7">
+                        <tr *ngFor="let aluno of alunos" [class.nullClass]="aluno.med==null" [class.greenClass]="aluno.med>=7" [class.redClass]="aluno.med>=0 && aluno.med<7 || aluno.freq<150">
                             <td>{{aluno.id}}</td>
                             <td>{{aluno.nome}}</td>
                             <td align=center>{{aluno.freq}}</td>
@@ -64,14 +64,14 @@
                     </div>
                     <br>
                     <div class="form-group-sm">
-                            <label for="nome">Frequência: </label>
-                            <input type="text" class="form-control" id="freq" name="freq" [(ngModel)]="novo.freq">
+                            <label for="nome">Frequência (Horas): </label>
+                            <input type="text" class="form-control" id="freq" name="freq" [(ngModel)]="novo.freq" required>
                     </div>
                 </div>
                 <div class="col">
                     <div class="form-group">
                         <br>
-                        <label for="nome">Notas: </label>
+                        <label for="nome">Notas:</label>
                         <div class="row">
                             <div class="col">
                                     N1 <input type="text" class="form-control" id="n1" name="n1" width="10" [(ngModel)]="novo.n1">

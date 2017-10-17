@@ -1,4 +1,5 @@
 
-.greenClass { background-color: green }
+.greenClass { background-color: rgb(90, 193, 90) }
 .redClass { background-color: rgb(255, 134, 134) }
+.nullClass{ background-color: unset}
  
