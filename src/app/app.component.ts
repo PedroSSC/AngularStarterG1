@@ -47,16 +47,16 @@ export class AppComponent implements OnInit {
 
     mediaTurma():number{
         let media = 0;
-        let div = 0;
+        let div:number = 0;
 
         for (let i = 0; i < this.alunos.length; i++) {
             if(this.alunos[i].med != null){
                 div ++;
-                media = media + +this.alunos[i].med;
+                media = +media + +this.alunos[i].med;
             }
         }  
-        console.log('media: '+media+'   div: '+div);
-        media = media/div;
+        media = +(media/div).toFixed(2);
+
         
         return media;
     }
