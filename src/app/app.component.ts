@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Aluno } from './aluno';
-import { Turma } from './turma';
+import { Aluno } from './classes/aluno';
+import { Turma } from './classes/turma';
 
 
 @Component({
@@ -10,48 +10,57 @@ import { Turma } from './turma';
 })
 export class AppComponent implements OnInit {
     alunos: Array<Aluno>;
-    selectA: Aluno = new Aluno(0, 1,'', null,null,null,null,null,null);
-    novo: Aluno = new Aluno(0, 1,'', null,null,null,null,null,null);
+    selectA: Aluno = new Aluno('', null,null,null,null,null,null);
+    novo: Aluno = new Aluno('', null,null,null,null,null,null);
     ultimo_id = 5;
     editando = false;
 
     turmas: Array<Turma>;
-    selectT: Turma = new Turma(0,null,null,null);
-    novoT: Turma = new Turma(0,null,null,null);
+    selectT: Turma = new Turma(0,null,null);
+    novoT: Turma = new Turma(0,null,null);
     ultimo_id_turma = 2;
+    editando_turma = false;
+
+    
 
 
 
     constructor() {
-        this.alunos = [
-            new Aluno(1, 105,'Alberto', null,null,null,null,null,null),
-            new Aluno(2, 105,'Bruna',   null,null,null,null,null,null),
-            new Aluno(3, 104,'Carla',   null,null,null,null,null,null),
-            new Aluno(4, 104,'Daniel',  null,null,null,null,null,null),
-            new Aluno(5, 105,'Gabriel', null,null,null,null,null,null)
+        this.turmas = [
+            new Turma(1,104,null),
+            new Turma(2,105,null)
         ];
 
-        this.turmas = [
-            new Turma(1,104,null,null),
-            new Turma(2,105,null,null)
-        ];
+        this.turmas[0].setAluno(new Aluno('Alberto', null,null,null,null,null,null));
+        this.turmas[0].setAluno(new Aluno('Benicio', null,null,null,null,null,null));
+        this.turmas[1].setAluno(new Aluno('Camila', null,null,null,null,null,null));
+        this.turmas[1].setAluno(new Aluno('Daniele', null,null,null,null,null,null));
+        this.turmas[1].setAluno(new Aluno('Eduardo', null,null,null,null,null,null));
+        
+
+        
+        
     }
 
     
     ngOnInit(): void {
-        //Calcula a quantidade de alunos em cada turma no inicio da execução.
+        /*//Calcula a quantidade de alunos em cada turma no inicio da execução.
         for(let i = 0; i < this.turmas.length; i++){
             this.contaAlunos(this.turmas[i]);
+        }*/
+
+        for(let Turma of this.turmas){
+            Turma.mediaTurma();
         }
     }
 
 
-    buscaAluno(nome: string): Aluno{
-        //Retorna o aluno buscando pelo seu numero na lista de alunos selecionada, retorna nulo se não encontrar.
-        //Pelo escopo do problema, entende-se que um aluno não pode estar matriculado em mais de uma turma.
-        for(let i = 0; i < this.alunos.length; i++){
-            if(this.alunos[i].nome == nome)
-                return this.alunos[i];
+    buscaAluno(nome: string, turma:Turma): Aluno{
+        //Retorna o aluno buscando pelo seu numero na turma selecionada, retorna nulo se não encontrar.
+        for(let Aluno of turma.alunos){
+            if (Aluno.nome == nome){
+                return Aluno;
+            }
         }
         return null;
     }
@@ -65,50 +74,61 @@ export class AppComponent implements OnInit {
         return null;
     }
 
+
     editar(aluno: Aluno): void {
         //Cria uma cópia do aluno para edição.
+        this.editando = true;
         this.selectA = aluno;
-        this.novo = new Aluno(aluno.id, aluno.turma, aluno.nome, aluno.freq, aluno.n1, aluno.n2, aluno.n3, aluno.n4, aluno.med);
+        this.novo = new Aluno(aluno.nome, aluno.freq, aluno.n1, aluno.n2, aluno.n3, aluno.n4, aluno.med, aluno.id, aluno.turma);
 
     }
 
     editarT(turma: Turma): void{
-        //Cria uma cópia da turma para edição. 
+        //Cria uma cópia da turma para edição.
+        this.editando_turma = true; 
         this.selectT = turma;
-        this.novoT = new Turma(turma.id, turma.turma, turma.alunos, turma.media)
+        turma.copiaTurma(this.novoT);
 
     }
 
     salvar(): void{
-        //Transfere os dados da cópia atualizados para o aluno original
-        let n = this.novo.media();
-        this.selectA.atualiza(this.novo);
-        this.novo = new Aluno(0, 1,'', null,null,null,null,null,null);
-        this.selectA = new Aluno(0, 1,'', null,null,null,null,null,null);
+        //Transfere as alterações feitas na cópia para o aluno original
+        if(this.buscaAluno(this.novo.nome, this.selectT)){
+            let n = this.novo.media();
+            this.selectA.atualiza(this.novo);
+            this.limpar();
+            this.selectT.mediaTurma();
+        }else{
+            this.limpar();
+        }
+
     }
 
     salvarTurma(): void{
-        //Transfere os dados da cópia da turma atualizados para a turma original, atualizando também todos os alunos
+        //Transfere as alterações da cópia da turma para a turma original, atualizando também todos os alunos
         //que estejam na turma.
-        for(let i = 0; i < this.alunos.length; i++){
-            if(this.alunos[i].turma == this.selectT.turma)
-                this.alunos[i].turma = this.novoT.turma;
+        if(!this.buscaTurma(this.novoT.turma)){
+            this.novoT.atualizaTurma(this.selectT);
+            this.novoT.copiaTurma(this.selectT);
+            this.limparT();
+        }else{
+            this.limparT();
         }
-        this.selectT.atualiza(this.novoT);
-        this.novoT = new Turma(0,null,null,null);
-        this.selectT = new Turma(0,null,null,null);
+
     }
 
     limpar():void{
         //Cancela a edição do aluno.
-        this.novo = new Aluno(0, 1,'', null,null,null,null,null,null);
-        this.selectA = new Aluno(0, 1,'', null,null,null,null,null,null);
+        this.novo = new Aluno('', null,null,null,null,null,null);
+        this.selectA = new Aluno('', null,null,null,null,null,null);
+        this.editando = false;
     }
 
     limparT():void{
         //Cancela a edição da turma.
-        this.novoT = new Turma(0,null,null,null);
-        this.selectT = new Turma(0,null,null,null);
+        this.novoT = new Turma(0,null,null);
+        this.selectT = new Turma(0,null,null);
+        this.editando_turma = false;
         this.limpar();
     }
 
@@ -132,36 +152,23 @@ export class AppComponent implements OnInit {
         this.selectT = turma;
     }
 
-    contaAlunos(turma: Turma):void{
-        //Conta a quantidade de alunos da turma.
-        let cont = 0;
-        for(let i = 0; i < this.alunos.length; i++){
-            if(this.alunos[i].turma == turma.turma){
-                cont++;
-                console.log(cont);
-            }
-        }
-        turma.alunos = cont;
-    }
-
     cadastrar():void{
-        if(!this.buscaAluno(this.novo.nome)){
-            if(this.selectT!=null){
-                this.novo.turma = this.selectT.turma;
-                this.ultimo_id ++ ;
-                this.novo.id = this.ultimo_id;
-                this.alunos.push(this.novo);
-                this.limpar();
-            }else{
-                this.limpar();
-            }
+        //Cadastra um novo aluno na turma selecionada, se o aluno já não estiver cadastrado.
+        if(!this.buscaAluno(this.novo.nome, this.selectT)){
+            this.novo.media();
+            this.novo.id = this.selectT.alunos.length+1;
+            this.novo.turma = this.selectT.turma;
+            this.selectT.alunos.push(this.novo);
+            this.selectT.mediaTurma();
+            this.limpar();
         }else{
             this.limpar();
         }
-        
+ 
     }
 
     cadastrarTurma():void{
+        //Cadastra uma nova turma, se já não estiver cadastrada.
         if(!this.buscaTurma(this.novoT.turma)){
             this.ultimo_id_turma ++ ;
             this.novoT.id = this.ultimo_id_turma;
@@ -170,6 +177,28 @@ export class AppComponent implements OnInit {
         }else{
             this.limparT();
         }
-        
     }
+
+    excluirTurma(turma: Turma):void{
+        //Exclui a turma indicada.
+        var index = this.turmas.indexOf(turma,0);
+        if(index > -1){
+            this.turmas.splice(index,1);
+        }
+    }
+
+    excluirAluno(aluno: Aluno){
+        //Exclui o aluno da turma e atualiza a média da turma.
+        //Se o aluno a ser excluido for o único da turma, a média da turma será null
+        var index = this.selectT.alunos.indexOf(aluno,0);
+        var tam = this.selectT.alunos.length;
+        if(index > -1){
+            if(tam = 1){
+                this.selectT.media = null;
+            }
+            this.selectT.alunos.splice(index,1);
+            this.selectT.mediaTurma();
+        }
+    }
+
 }
