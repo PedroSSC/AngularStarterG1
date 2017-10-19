@@ -23,7 +23,7 @@
                         <tr *ngFor="let turma of turmas">
                             <td>{{turma.id}}</td>
                             <td>{{turma.turma}}</td>
-                            <td>{{turma.contador()}}</td>
+                            <td>{{turma.alunos.length}}</td>
                             <td>{{turma.media}}</td>
                             <td>
                                 <button class="btn btn-sm btn-primary" (click)="visualizarT(turma)">Visualizar</button>
